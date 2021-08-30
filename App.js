@@ -2,47 +2,18 @@
 
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, Text, View, StyleSheet, Image, Dimensions } from 'react-native';
+import ItemsList from './components/ItemsList';
 
 const App = () => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
-  const getArticles = async () => {
-     try {
-      const response = await fetch('https://api.spaceflightnewsapi.net/v3/articles');
-      const json = await response.json();
-      console.log(json);
-      setData(json);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    getArticles();
-  }, []);
-
   return (
-    <View style={{ flex: 1, padding: 24 }}>
-      {isLoading ? <ActivityIndicator/> : (
-        <FlatList
-          data={data}
-          keyExtractor={({ id }, index) => id}
-          renderItem={({ item }) => (
-            <View style={styles.item}>
-            <Text>{item.title}</Text>
-            <Image
-              style={{width: 100, height: 100}}
-              source={{
-              uri: item.imageUrl,
-              }}
-            />
-            </View>
-          )}
-        />
-      )}
+    <View style={styles.container}>
+      <View style={styles.topbar}>
+        <Text style={styles.title}>Space News</Text>
+      </View>
+      <ItemsList />
     </View>
   );
 };
@@ -52,18 +23,24 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
-  },
-  item: {
-    padding: 16,
-    marginTop: 16,
-    borderColor: '#bbb',
-    borderWidth: 1,
-    borderStyle: "dashed",
-    borderRadius: 1,
-    borderRadius: 10,
-    flexDirection: 'col',
     alignItems: 'center',
+    backgroundColor: '#0000',
+  },
+  topbar: {
+    width: '100%',
+    height: '10%',
+    flexDirection: 'row', // row
+    backgroundColor: 'black',
+    alignContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'space-between', // center, space-around
+    paddingLeft: 10,
+    paddingRight: 10
+  },
+  title: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
   },
 });
 
